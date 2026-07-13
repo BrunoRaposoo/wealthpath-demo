@@ -25,8 +25,8 @@ src/
 │   ├── openai/       # OpenAI API client (explanations)
 │   └── utils.ts      # Utility functions (cn helper)
 ├── store/            # Zustand state stores
-└── types/            # Shared TypeScript types
-providers.tsx          # TanStack Query provider
+├── types/            # Shared TypeScript types
+└── providers.tsx     # TanStack Query provider
 ```
 
 ## Environment Variables
@@ -43,7 +43,7 @@ Required variables:
 |----------|-------------|
 | `EODHD_API_KEY` | API key for EODHD market data |
 | `OPENROUTER_API_KEY` | API key for OpenRouter (AI completions) |
-| `OPENROUTER_MODEL` | Model ID, defaults to `deepseek/deepseek-chat-v3:free` |
+| `OPENROUTER_MODEL` | Model ID, defaults to `openai/gpt-oss-20b:free` |
 | `OPENROUTER_BASE_URL` | Override base URL, defaults to `https://openrouter.ai/api/v1` |
 | `OPENROUTER_SITE_URL` | Optional HTTP-Referer header for OpenRouter |
 | `OPENROUTER_SITE_NAME` | Optional X-Title header for OpenRouter |
