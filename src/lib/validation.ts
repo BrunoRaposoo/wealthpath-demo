@@ -3,8 +3,16 @@ import { z } from "zod";
 export const setupSchema = z
   .object({
     clientName: z.string().min(1, "Nome é obrigatório"),
-    currentAge: z.number().int().min(18, "Idade mínima: 18").max(80, "Idade máxima: 80"),
-    retirementAge: z.number().int().min(19, "Idade de reforma mínima: 19").max(80),
+    currentAge: z
+      .number()
+      .int()
+      .min(18, "Idade mínima: 18")
+      .max(80, "Idade máxima: 80"),
+    retirementAge: z
+      .number()
+      .int()
+      .min(19, "Idade de reforma mínima: 19")
+      .max(80),
     monthlyIncome: z.number().min(0, "Rendimento não pode ser negativo"),
     monthlyExpenses: z.number().min(0, "Despesas não podem ser negativas"),
     currentSavings: z.number().min(0, "Poupanças não podem ser negativas"),

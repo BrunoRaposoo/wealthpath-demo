@@ -1,4 +1,7 @@
-import { getPortfolioForProfile, DEFAULT_INFLATION_RATE } from "@/config/portfolios";
+import {
+  DEFAULT_INFLATION_RATE,
+  getPortfolioForProfile,
+} from "@/config/portfolios";
 import { getHistoricalData } from "@/lib/eodhd";
 import type { RiskProfile } from "@/types";
 

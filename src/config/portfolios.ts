@@ -14,7 +14,7 @@ export const portfolios: PortfolioMap = {
   aggressive: {
     spy: 100,
     agg: 0,
-    expectedReturn: 0.10,
+    expectedReturn: 0.1,
   },
 };
 

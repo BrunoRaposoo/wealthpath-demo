@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { setupSchema } from "@/lib/validation";
 import { getExpectedReturn } from "@/lib/eodhd-market";
+import { setupSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {

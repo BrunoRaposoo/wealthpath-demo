@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { explainSchema } from "@/lib/validation";
 import { generateExplanation } from "@/lib/openai-explain";
+import { explainSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {
