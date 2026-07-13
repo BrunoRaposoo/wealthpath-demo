@@ -1,29 +1,29 @@
-import { createChatCompletion } from "@/lib/openai";
+import { createChatCompletion, DEFAULT_MODEL } from "@/lib/openai";
 import type { ScenarioSummary } from "@/types";
 
 export async function generateExplanation(
   scenarioA: ScenarioSummary,
   scenarioB: ScenarioSummary,
 ): Promise<string> {
-  const prompt = `És um consultor financeiro. Explica de forma clara e curta (máx 3 frases) a diferença entre estes dois cenários de reforma.
+  const prompt = `És um consultor financeiro. Explica de forma clara e curta (máx 3 frases) a diferença entre estes dois cenários de aposentadoria.
 
 Cenário A (${scenarioA.label}):
-- Idade de reforma: ${scenarioA.retirementAge}
+- Idade de aposentadoria: ${scenarioA.retirementAge}
 - Contribuição mensal: €${scenarioA.monthlyContribution}
 - Património final: €${scenarioA.finalNetWorth}
-- Anos até reforma: ${scenarioA.yearsToRetirement}
+- Anos até aposentadoria: ${scenarioA.yearsToRetirement}
 
 Cenário B (${scenarioB.label}):
-- Idade de reforma: ${scenarioB.retirementAge}
+- Idade de aposentadoria: ${scenarioB.retirementAge}
 - Contribuição mensal: €${scenarioB.monthlyContribution}
 - Património final: €${scenarioB.finalNetWorth}
-- Anos até reforma: ${scenarioB.yearsToRetirement}
+- Anos até aposentadoria: ${scenarioB.yearsToRetirement}
 
 Foca-te no impacto no património final e no risco de longevidade. Responde em português.`;
 
   try {
     const response = await createChatCompletion({
-      model: "gpt-4o-mini",
+      model: DEFAULT_MODEL,
       messages: [
         { role: "system", content: "És um consultor financeiro profissional." },
         { role: "user", content: prompt },

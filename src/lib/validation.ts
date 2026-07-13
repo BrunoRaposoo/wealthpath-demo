@@ -11,7 +11,7 @@ export const setupSchema = z
     retirementAge: z
       .number()
       .int()
-      .min(19, "Idade de reforma mínima: 19")
+      .min(19, "Idade de aposentadoria mínima: 19")
       .max(80),
     monthlyIncome: z.number().min(0, "Rendimento não pode ser negativo"),
     monthlyExpenses: z.number().min(0, "Despesas não podem ser negativas"),
@@ -19,7 +19,7 @@ export const setupSchema = z
     riskProfile: z.enum(["conservative", "moderate", "aggressive"]),
   })
   .refine((data) => data.retirementAge > data.currentAge, {
-    message: "Idade de reforma deve ser superior à idade atual",
+    message: "Idade de aposentadoria deve ser superior à idade atual",
     path: ["retirementAge"],
   });
 

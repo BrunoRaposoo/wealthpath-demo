@@ -1,13 +1,8 @@
 "use client";
 
+import { ScenarioField } from "@/components/ScenarioField";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSimulationStore } from "@/stores/useSimulationStore";
 
 export function ScenarioSliders() {
@@ -20,72 +15,50 @@ export function ScenarioSliders() {
   if (!currentParams) return null;
 
   const maxRetirementAge = 75;
-  const maxContribution = currentParams.monthlyContribution * 2 || 2000;
+  // Teto dinâmico: ao escrever um valor acima do dobro, o slider expande (não faz clamp duro).
+  const maxContribution = Math.max(2000, currentParams.monthlyContribution * 2);
 
   return (
-    <Card>
+    <Card className="border-border bg-card shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
       <CardHeader>
-        <CardTitle>Simulação</CardTitle>
-        <CardDescription>
-          Ajuste os parâmetros para ver o impacto na projeção
-        </CardDescription>
+        <CardTitle className="text-base font-bold">Ajustar cenário</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <label htmlFor="retirement-slider" className="text-sm font-medium">
-              Idade de Reforma
-            </label>
-            <span className="text-sm text-muted-foreground">
-              {currentParams.retirementAge} anos
-            </span>
-          </div>
-          <input
-            id="retirement-slider"
-            type="range"
-            min={currentParams.currentAge + 1}
-            max={maxRetirementAge}
-            value={currentParams.retirementAge}
-            onChange={(e) =>
-              setCurrentParams({ retirementAge: Number(e.target.value) })
-            }
-            className="w-full"
-          />
-        </div>
+        <ScenarioField
+          id="retirement-slider"
+          label="Idade de Aposentadoria"
+          value={currentParams.retirementAge}
+          min={currentParams.currentAge + 1}
+          max={maxRetirementAge}
+          onChange={(v) => setCurrentParams({ retirementAge: v })}
+        />
 
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <label
-              htmlFor="contribution-slider"
-              className="text-sm font-medium"
-            >
-              Contribuição Mensal
-            </label>
-            <span className="text-sm text-muted-foreground">
-              €{currentParams.monthlyContribution}
-            </span>
-          </div>
-          <input
-            id="contribution-slider"
-            type="range"
-            min={0}
-            max={maxContribution}
-            step={50}
-            value={currentParams.monthlyContribution}
-            onChange={(e) =>
-              setCurrentParams({ monthlyContribution: Number(e.target.value) })
-            }
-            className="w-full"
-          />
-        </div>
+        <ScenarioField
+          id="contribution-slider"
+          label="Contribuição Mensal"
+          value={currentParams.monthlyContribution}
+          min={0}
+          max={maxContribution}
+          step={50}
+          prefix="€"
+          onChange={(v) => setCurrentParams({ monthlyContribution: v })}
+        />
 
         <div className="flex gap-2">
           {!isComparing ? (
-            <Button variant="outline" onClick={fixBaseScenario}>
+            <Button
+              variant="outline"
+              onClick={fixBaseScenario}
+              className="border-border font-bold rounded-xl"
+            >
               Fixar cenário base
             </Button>
           ) : (
-            <Button variant="outline" onClick={clearComparison}>
+            <Button
+              variant="outline"
+              onClick={clearComparison}
+              className="border-border font-bold rounded-xl"
+            >
               Remover comparação
             </Button>
           )}
