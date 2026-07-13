@@ -80,9 +80,9 @@ export function SetupForm() {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto border-border bg-card shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
       <CardHeader>
-        <CardTitle>WealthPath Setup</CardTitle>
+        <CardTitle className="text-base font-bold">WealthPath Setup</CardTitle>
         <CardDescription>
           Configure os dados do cliente para gerar a projeção financeira.
         </CardDescription>
@@ -214,7 +214,7 @@ export function SetupForm() {
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-primary text-primary-foreground font-bold rounded-xl hover:bg-primary/90 transition-colors"
             disabled={mutation.isPending || surplus <= 0}
           >
             {mutation.isPending
