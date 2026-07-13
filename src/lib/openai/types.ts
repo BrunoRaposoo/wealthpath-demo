@@ -4,7 +4,7 @@ export interface OpenAIMessage {
 }
 
 export interface OpenAIChatCompletionRequest {
-  model: string;
+  model?: string;
   messages: OpenAIMessage[];
   temperature?: number;
   max_tokens?: number;

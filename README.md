@@ -42,7 +42,11 @@ Required variables:
 | Variable | Description |
 |----------|-------------|
 | `EODHD_API_KEY` | API key for EODHD market data |
-| `OPENAI_API_KEY` | API key for OpenAI explanations |
+| `OPENROUTER_API_KEY` | API key for OpenRouter (AI completions) |
+| `OPENROUTER_MODEL` | Model ID, defaults to `deepseek/deepseek-chat-v3:free` |
+| `OPENROUTER_BASE_URL` | Override base URL, defaults to `https://openrouter.ai/api/v1` |
+| `OPENROUTER_SITE_URL` | Optional HTTP-Referer header for OpenRouter |
+| `OPENROUTER_SITE_NAME` | Optional X-Title header for OpenRouter |
 
 ## Getting Started
 
@@ -102,9 +106,9 @@ Available functions:
 - `getHistoricalData()` - Get historical OHLCV data
 - `getFundamentalData()` - Get fundamental company data
 
-### OpenAI
+### AI Completions (OpenRouter)
 
-AI explanations via [OpenAI](https://openai.com/). Client located at `src/lib/openai/`.
+AI completions via [OpenRouter](https://openrouter.ai/). Client located at `src/lib/openai/`.
 
 Available functions:
 - `createChatCompletion()` - Create chat completions

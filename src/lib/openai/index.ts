@@ -3,34 +3,54 @@ import type {
   OpenAIChatCompletionResponse,
 } from "./types";
 
-const OPENAI_BASE_URL = "https://api.openai.com/v1";
+const OPENROUTER_BASE_URL =
+  process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1";
+
+export const DEFAULT_MODEL =
+  process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free";
 
 function getApiKey(): string {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    throw new Error("OPENAI_API_KEY environment variable is not set");
+    throw new Error("OPENROUTER_API_KEY environment variable is not set");
   }
   return apiKey;
+}
+
+function buildHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getApiKey()}`,
+  };
+
+  const siteUrl = process.env.OPENROUTER_SITE_URL;
+  if (siteUrl) {
+    headers["HTTP-Referer"] = siteUrl;
+  }
+
+  const siteName = process.env.OPENROUTER_SITE_NAME;
+  if (siteName) {
+    headers["X-Title"] = siteName;
+  }
+
+  return headers;
 }
 
 export async function createChatCompletion(
   request: OpenAIChatCompletionRequest,
 ): Promise<OpenAIChatCompletionResponse> {
-  const apiKey = getApiKey();
+  const body = { ...request, model: request.model ?? DEFAULT_MODEL };
 
-  const response = await fetch(`${OPENAI_BASE_URL}/chat/completions`, {
+  const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(request),
+    headers: buildHeaders(),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
     const error = await response.json().catch(() => null);
     throw new Error(
-      `OpenAI API error: ${response.status} ${response.statusText}${
+      `OpenRouter API error: ${response.status} ${response.statusText}${
         error ? ` - ${JSON.stringify(error)}` : ""
       }`,
     );
@@ -42,21 +62,22 @@ export async function createChatCompletion(
 export async function* streamChatCompletion(
   request: OpenAIChatCompletionRequest,
 ): AsyncGenerator<string, void, unknown> {
-  const apiKey = getApiKey();
+  const body = {
+    ...request,
+    model: request.model ?? DEFAULT_MODEL,
+    stream: true,
+  };
 
-  const response = await fetch(`${OPENAI_BASE_URL}/chat/completions`, {
+  const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({ ...request, stream: true }),
+    headers: buildHeaders(),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
     const error = await response.json().catch(() => null);
     throw new Error(
-      `OpenAI API error: ${response.status} ${response.statusText}${
+      `OpenRouter API error: ${response.status} ${response.statusText}${
         error ? ` - ${JSON.stringify(error)}` : ""
       }`,
     );

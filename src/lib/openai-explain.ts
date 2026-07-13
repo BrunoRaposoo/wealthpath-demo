@@ -1,4 +1,4 @@
-import { createChatCompletion } from "@/lib/openai";
+import { createChatCompletion, DEFAULT_MODEL } from "@/lib/openai";
 import type { ScenarioSummary } from "@/types";
 
 export async function generateExplanation(
@@ -23,7 +23,7 @@ Foca-te no impacto no património final e no risco de longevidade. Responde em p
 
   try {
     const response = await createChatCompletion({
-      model: "gpt-4o-mini",
+      model: DEFAULT_MODEL,
       messages: [
         { role: "system", content: "És um consultor financeiro profissional." },
         { role: "user", content: prompt },
