@@ -1,5 +1,6 @@
 "use client";
 
+import { ScenarioField } from "@/components/ScenarioField";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSimulationStore } from "@/stores/useSimulationStore";
@@ -14,14 +15,8 @@ export function ScenarioSliders() {
   if (!currentParams) return null;
 
   const maxRetirementAge = 75;
-  const maxContribution = currentParams.monthlyContribution * 2 || 2000;
-
-  const retirementPct =
-    ((currentParams.retirementAge - (currentParams.currentAge + 1)) /
-      (maxRetirementAge - (currentParams.currentAge + 1))) *
-    100;
-  const contributionPct =
-    (currentParams.monthlyContribution / maxContribution) * 100;
+  // Teto dinâmico: ao escrever um valor acima do dobro, o slider expande (não faz clamp duro).
+  const maxContribution = Math.max(2000, currentParams.monthlyContribution * 2);
 
   return (
     <Card className="border-border bg-card shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
@@ -29,50 +24,25 @@ export function ScenarioSliders() {
         <CardTitle className="text-base font-bold">Ajustar cenário</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-2.5">
-          <div className="flex justify-between font-semibold text-sm">
-            <label htmlFor="retirement-slider">Idade de Reforma</label>
-            <span className="text-primary">{currentParams.retirementAge}</span>
-          </div>
-          <input
-            id="retirement-slider"
-            type="range"
-            min={currentParams.currentAge + 1}
-            max={maxRetirementAge}
-            value={currentParams.retirementAge}
-            onChange={(e) =>
-              setCurrentParams({ retirementAge: Number(e.target.value) })
-            }
-            className="w-full"
-            style={
-              { "--slider-pct": `${retirementPct}%` } as React.CSSProperties
-            }
-          />
-        </div>
+        <ScenarioField
+          id="retirement-slider"
+          label="Idade de Aposentadoria"
+          value={currentParams.retirementAge}
+          min={currentParams.currentAge + 1}
+          max={maxRetirementAge}
+          onChange={(v) => setCurrentParams({ retirementAge: v })}
+        />
 
-        <div className="space-y-2.5">
-          <div className="flex justify-between font-semibold text-sm">
-            <label htmlFor="contribution-slider">Contribuição Mensal</label>
-            <span className="text-primary">
-              €{currentParams.monthlyContribution}
-            </span>
-          </div>
-          <input
-            id="contribution-slider"
-            type="range"
-            min={0}
-            max={maxContribution}
-            step={50}
-            value={currentParams.monthlyContribution}
-            onChange={(e) =>
-              setCurrentParams({ monthlyContribution: Number(e.target.value) })
-            }
-            className="w-full"
-            style={
-              { "--slider-pct": `${contributionPct}%` } as React.CSSProperties
-            }
-          />
-        </div>
+        <ScenarioField
+          id="contribution-slider"
+          label="Contribuição Mensal"
+          value={currentParams.monthlyContribution}
+          min={0}
+          max={maxContribution}
+          step={50}
+          prefix="€"
+          onChange={(v) => setCurrentParams({ monthlyContribution: v })}
+        />
 
         <div className="flex gap-2">
           {!isComparing ? (

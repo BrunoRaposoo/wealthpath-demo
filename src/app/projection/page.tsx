@@ -83,7 +83,7 @@ export default function ProjectionPage() {
             Projeção para {formData.clientName}
           </h1>
           <p className="text-muted-foreground mt-1">
-            Simulação de reforma até aos 95 anos, ajustada à inflação.
+            Simulação de aposentadoria até aos 95 anos, ajustada à inflação.
           </p>
         </div>
       </div>
@@ -91,7 +91,7 @@ export default function ProjectionPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-5">
         <div className="bg-card border border-border rounded-2xl p-4 shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
           <div className="text-[13px] font-semibold text-muted-foreground">
-            Património à reforma
+            Património na aposentadoria
           </div>
           <div className="text-2xl font-extrabold tracking-[-0.02em] mt-1.5">
             {formatCurrency(finalNetWorth)}
@@ -111,7 +111,7 @@ export default function ProjectionPage() {
         </div>
         <div className="bg-card border border-border rounded-2xl p-4 shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
           <div className="text-[13px] font-semibold text-muted-foreground">
-            Idade de reforma
+            Idade de aposentadoria
           </div>
           <div className="text-2xl font-extrabold tracking-[-0.02em] mt-1.5">
             {currentParams.retirementAge} anos

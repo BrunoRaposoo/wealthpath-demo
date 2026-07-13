@@ -120,7 +120,7 @@ export function SetupForm() {
 
             <div className="space-y-2">
               <label htmlFor="retirementAge" className="text-sm font-medium">
-                Idade de Reforma
+                Idade de Aposentadoria
               </label>
               <Input
                 id="retirementAge"
