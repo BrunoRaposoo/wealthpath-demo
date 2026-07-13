@@ -11,7 +11,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { computeProjection } from "@/lib/calculations";
 import { useSimulationStore } from "@/stores/useSimulationStore";
+import type { SimulationParams } from "@/types";
+
+function getFinalNetWorth(params: SimulationParams | null): number {
+  if (!params) return 0;
+  const points = computeProjection(params);
+  const retirementPoint = points.find((p) => p.age === params.retirementAge);
+  return retirementPoint
+    ? retirementPoint.netWorth
+    : (points.at(-1)?.netWorth ?? 0);
+}
 
 export function AIExplanation() {
   const baseScenario = useSimulationStore((s) => s.baseScenario);
@@ -30,7 +41,7 @@ export function AIExplanation() {
             label: "Base",
             retirementAge: baseScenario?.retirementAge ?? 0,
             monthlyContribution: baseScenario?.monthlyContribution ?? 0,
-            finalNetWorth: 0,
+            finalNetWorth: getFinalNetWorth(baseScenario),
             yearsToRetirement: baseScenario
               ? baseScenario.retirementAge - baseScenario.currentAge
               : 0,
@@ -39,7 +50,7 @@ export function AIExplanation() {
             label: "Atual",
             retirementAge: currentParams?.retirementAge ?? 0,
             monthlyContribution: currentParams?.monthlyContribution ?? 0,
-            finalNetWorth: 0,
+            finalNetWorth: getFinalNetWorth(currentParams),
             yearsToRetirement: currentParams
               ? currentParams.retirementAge - currentParams.currentAge
               : 0,
