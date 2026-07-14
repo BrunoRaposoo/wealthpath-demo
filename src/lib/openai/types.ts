@@ -12,6 +12,11 @@ export interface OpenAIChatCompletionRequest {
   frequency_penalty?: number;
   presence_penalty?: number;
   stream?: boolean;
+  reasoning?: {
+    effort?: "low" | "medium" | "high";
+    max_tokens?: number;
+    exclude?: boolean;
+  };
 }
 
 export interface OpenAIChatCompletionResponse {
