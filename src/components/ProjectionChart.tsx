@@ -78,7 +78,10 @@ export function ProjectionChart({
       <CardContent>
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={mergedData}>
+            <LineChart
+              data={mergedData}
+              margin={{ top: 5, right: 20, left: 36, bottom: 5 }}
+            >
               <CartesianGrid strokeDasharray="3 3" stroke="#eef2f1" />
               <XAxis
                 dataKey="age"
@@ -90,11 +93,20 @@ export function ProjectionChart({
                 tick={{ fontSize: 12, fill: "#5b6d69" }}
               />
               <YAxis
+                width={110}
                 tickFormatter={(v) => formatCurrency(v)}
+                tickMargin={8}
                 label={{
                   value: "Património (€)",
                   angle: -90,
                   position: "insideLeft",
+                  dx: -20,
+                  dy: 40,
+                  style: {
+                    textAnchor: "middle",
+                    fontSize: 12,
+                    fill: "#5b6d69",
+                  },
                 }}
                 tick={{ fontSize: 12, fill: "#5b6d69" }}
               />
