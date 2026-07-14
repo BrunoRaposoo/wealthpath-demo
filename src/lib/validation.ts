@@ -38,4 +38,5 @@ export const explainSchema = z.object({
     finalNetWorth: z.number(),
     yearsToRetirement: z.number(),
   }),
+  locale: z.enum(["pt-BR", "en-GB"]).default("pt-BR"),
 });

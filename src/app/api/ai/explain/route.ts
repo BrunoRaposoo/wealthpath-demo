@@ -14,8 +14,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const { scenarioA, scenarioB } = parsed.data;
-    const explanation = await generateExplanation(scenarioA, scenarioB);
+    const { scenarioA, scenarioB, locale } = parsed.data;
+    const explanation = await generateExplanation(scenarioA, scenarioB, locale);
 
     return NextResponse.json({ explanation });
   } catch {
