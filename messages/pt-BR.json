@@ -1,0 +1,57 @@
+{
+  "Nav": {
+    "home": "Início",
+    "projection": "Projeção",
+    "reports": "Relatórios",
+    "languageLabel": "Selecionar idioma",
+    "portuguese": "Português (Brasil)",
+    "english": "Inglês (Reino Unido)"
+  },
+  "Setup": {
+    "title": "Configuração do WealthPath",
+    "description": "Configure os dados do cliente para gerar a projeção financeira.",
+    "clientName": "Nome do Cliente",
+    "currentAge": "Idade Atual",
+    "retirementAge": "Idade de Aposentadoria",
+    "monthlyIncome": "Rendimento Mensal (€)",
+    "monthlyExpenses": "Despesas Mensais (€)",
+    "surplusError": "As despesas excedem o rendimento. Ajuste os valores para continuar.",
+    "currentSavings": "Valor Atual Investido (€)",
+    "riskProfile": "Perfil de Risco",
+    "riskConservative": "Conservador (20% SPY / 80% AGG)",
+    "riskModerate": "Moderado (60% SPY / 40% AGG)",
+    "riskAggressive": "Agressivo (100% SPY)",
+    "submit": "Gerar Projeção",
+    "submitting": "A obter dados de mercado...",
+    "fetchError": "Falha ao obter dados de mercado"
+  },
+  "Projection": {
+    "profileBadge": "Perfil {profile} · retorno {rate}%/ano",
+    "heading": "Projeção para {name}",
+    "subtitle": "Simulação de aposentadoria até aos 95 anos, ajustada à inflação.",
+    "netWorth": "Património na aposentadoria",
+    "retirementAge": "Idade de aposentadoria",
+    "years": "anos",
+    "monthlyContribution": "Contribuição mensal",
+    "vsBase": "vs base",
+    "earlier": "mais cedo",
+    "later": "mais tarde"
+  },
+  "Scenario": {
+    "adjust": "Ajustar cenário",
+    "retirementLabel": "Idade de Aposentadoria",
+    "contributionLabel": "Contribuição Mensal",
+    "fixBase": "Fixar cenário base",
+    "removeComparison": "Remover comparação"
+  },
+  "AI": {
+    "title": "✨ Explicação por IA",
+    "modelBadge": "gpt-oss",
+    "button": "Explicar diferença",
+    "empty": ""
+  },
+  "Locale": {
+    "pt-BR": "Português (Brasil)",
+    "en-GB": "Inglês (Reino Unido)"
+  }
+}

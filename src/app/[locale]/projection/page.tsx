@@ -1,22 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AIExplanation } from "@/components/AIExplanation";
 import { ProjectionChart } from "@/components/ProjectionChart";
 import { ScenarioSliders } from "@/components/ScenarioSliders";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "@/i18n/navigation";
 import { computeProjection } from "@/lib/calculations";
 import { useSetupStore } from "@/stores/useSetupStore";
 import { useSimulationStore } from "@/stores/useSimulationStore";
-
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("pt-PT", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
 
 export default function ProjectionPage() {
   const router = useRouter();
@@ -181,4 +173,12 @@ export default function ProjectionPage() {
       </div>
     </main>
   );
+}
+
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat("pt-PT", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(value);
 }

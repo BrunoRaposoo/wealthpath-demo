@@ -1,0 +1,57 @@
+{
+  "Nav": {
+    "home": "Home",
+    "projection": "Projection",
+    "reports": "Reports",
+    "languageLabel": "Select language",
+    "portuguese": "Portuguese (Brazil)",
+    "english": "English (UK)"
+  },
+  "Setup": {
+    "title": "WealthPath Setup",
+    "description": "Configure the client data to generate the financial projection.",
+    "clientName": "Client Name",
+    "currentAge": "Current Age",
+    "retirementAge": "Retirement Age",
+    "monthlyIncome": "Monthly Income (€)",
+    "monthlyExpenses": "Monthly Expenses (€)",
+    "surplusError": "Expenses exceed income. Adjust the values to continue.",
+    "currentSavings": "Current Invested Amount (€)",
+    "riskProfile": "Risk Profile",
+    "riskConservative": "Conservative (20% SPY / 80% AGG)",
+    "riskModerate": "Moderate (60% SPY / 40% AGG)",
+    "riskAggressive": "Aggressive (100% SPY)",
+    "submit": "Generate Projection",
+    "submitting": "Fetching market data...",
+    "fetchError": "Failed to fetch market data"
+  },
+  "Projection": {
+    "profileBadge": "Profile {profile} · return {rate}%/yr",
+    "heading": "Projection for {name}",
+    "subtitle": "Retirement simulation up to age 95, inflation-adjusted.",
+    "netWorth": "Net worth at retirement",
+    "retirementAge": "Retirement age",
+    "years": "years",
+    "monthlyContribution": "Monthly contribution",
+    "vsBase": "vs base",
+    "earlier": "earlier",
+    "later": "later"
+  },
+  "Scenario": {
+    "adjust": "Adjust scenario",
+    "retirementLabel": "Retirement Age",
+    "contributionLabel": "Monthly Contribution",
+    "fixBase": "Fix base scenario",
+    "removeComparison": "Remove comparison"
+  },
+  "AI": {
+    "title": "✨ AI Explanation",
+    "modelBadge": "gpt-oss",
+    "button": "Explain the difference",
+    "empty": ""
+  },
+  "Locale": {
+    "pt-BR": "Portuguese (Brazil)",
+    "en-GB": "English (UK)"
+  }
+}
