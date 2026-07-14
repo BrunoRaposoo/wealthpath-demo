@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   CartesianGrid,
   Line,
@@ -18,6 +19,12 @@ interface ProjectionChartProps {
   isAnimating?: boolean;
 }
 
+interface MergedPoint {
+  age: number;
+  netWorth?: number;
+  baseNetWorth?: number;
+}
+
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("pt-PT", {
     style: "currency",
@@ -31,6 +38,26 @@ export function ProjectionChart({
   comparisonData,
   isAnimating = true,
 }: ProjectionChartProps) {
+  const mergedData = useMemo<MergedPoint[]>(() => {
+    if (!comparisonData) {
+      return data.map((p) => ({ age: p.age, netWorth: p.netWorth }));
+    }
+    const baseByAge = new Map<number, number>(
+      comparisonData.map((p) => [p.age, p.netWorth]),
+    );
+    const allAges = new Set([
+      ...data.map((p) => p.age),
+      ...comparisonData.map((p) => p.age),
+    ]);
+    return Array.from(allAges)
+      .sort((a, b) => a - b)
+      .map((age) => ({
+        age,
+        netWorth: data.find((p) => p.age === age)?.netWorth,
+        baseNetWorth: baseByAge.get(age),
+      }));
+  }, [data, comparisonData]);
+
   return (
     <Card className="border-border bg-card shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -51,7 +78,10 @@ export function ProjectionChart({
       <CardContent>
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
+            <LineChart
+              data={mergedData}
+              margin={{ top: 5, right: 20, left: 36, bottom: 5 }}
+            >
               <CartesianGrid strokeDasharray="3 3" stroke="#eef2f1" />
               <XAxis
                 dataKey="age"
@@ -63,11 +93,20 @@ export function ProjectionChart({
                 tick={{ fontSize: 12, fill: "#5b6d69" }}
               />
               <YAxis
+                width={110}
                 tickFormatter={(v) => formatCurrency(v)}
+                tickMargin={8}
                 label={{
                   value: "Património (€)",
                   angle: -90,
                   position: "insideLeft",
+                  dx: -20,
+                  dy: 40,
+                  style: {
+                    textAnchor: "middle",
+                    fontSize: 12,
+                    fill: "#5b6d69",
+                  },
                 }}
                 tick={{ fontSize: 12, fill: "#5b6d69" }}
               />
@@ -91,8 +130,7 @@ export function ProjectionChart({
               {comparisonData && (
                 <Line
                   type="monotone"
-                  data={comparisonData}
-                  dataKey="netWorth"
+                  dataKey="baseNetWorth"
                   stroke="#1868e0"
                   strokeWidth={2}
                   strokeDasharray="6 5"
