@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,6 +19,8 @@ function getFinalNetWorth(params: SimulationParams | null): number {
 }
 
 export function AIExplanation() {
+  const t = useTranslations("AI");
+  const locale = useLocale();
   const baseScenario = useSimulationStore((s) => s.baseScenario);
   const currentParams = useSimulationStore((s) => s.currentParams);
   const isComparing = useSimulationStore((s) => s.isComparing);
@@ -48,6 +51,7 @@ export function AIExplanation() {
               ? currentParams.retirementAge - currentParams.currentAge
               : 0,
           },
+          locale,
         }),
       });
       if (!res.ok) return null;
@@ -63,9 +67,9 @@ export function AIExplanation() {
   return (
     <div className="rounded-2xl bg-[linear-gradient(160deg,#0b7d5e,#0f9d76)] text-white p-5 shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-bold text-white">✨ Explicação por IA</h3>
+        <h3 className="text-base font-bold text-white">{t("title")}</h3>
         <span className="bg-white/18 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-          gpt-oss
+          {t("modelBadge")}
         </span>
       </div>
       <div>
@@ -75,7 +79,7 @@ export function AIExplanation() {
             disabled={loading}
             className="bg-white text-[#0b7d5e] font-bold rounded-xl hover:bg-white/90 transition-colors"
           >
-            Explicar diferença
+            {t("button")}
           </Button>
         )}
         {enabled && loading && (
