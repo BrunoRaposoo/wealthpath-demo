@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormatter, useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { AIExplanation } from "@/components/AIExplanation";
 import { ProjectionChart } from "@/components/ProjectionChart";
@@ -11,6 +12,8 @@ import { useSetupStore } from "@/stores/useSetupStore";
 import { useSimulationStore } from "@/stores/useSimulationStore";
 
 export default function ProjectionPage() {
+  const t = useTranslations("Projection");
+  const format = useFormatter();
   const router = useRouter();
   const formData = useSetupStore((s) => s.formData);
   const marketData = useSetupStore((s) => s.marketData);
@@ -63,27 +66,36 @@ export default function ProjectionPage() {
         100
       : 0;
 
+  function formatCurrency(value: number): string {
+    return format.number(value, {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    });
+  }
+
   return (
     <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
       <div className="flex items-end justify-between flex-wrap gap-4 mb-5">
         <div>
           <span className="inline-flex items-center gap-2 bg-accent text-accent-foreground font-bold text-[13px] px-3 py-1.5 rounded-full">
-            ● Perfil {formData.riskProfile} · retorno{" "}
-            {(marketData.expectedAnnualReturn * 100).toFixed(1)}%/ano
+            ●{" "}
+            {t("profileBadge", {
+              profile: formData.riskProfile,
+              rate: (marketData.expectedAnnualReturn * 100).toFixed(1),
+            })}
           </span>
           <h1 className="text-[28px] font-extrabold tracking-[-0.02em] mt-3">
-            Projeção para {formData.clientName}
+            {t("heading", { name: formData.clientName })}
           </h1>
-          <p className="text-muted-foreground mt-1">
-            Simulação de aposentadoria até aos 95 anos, ajustada à inflação.
-          </p>
+          <p className="text-muted-foreground mt-1">{t("subtitle")}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-5">
         <div className="bg-card border border-border rounded-2xl p-4 shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
           <div className="text-[13px] font-semibold text-muted-foreground">
-            Património na aposentadoria
+            {t("netWorth")}
           </div>
           <div className="text-2xl font-extrabold tracking-[-0.02em] mt-1.5">
             {formatCurrency(finalNetWorth)}
@@ -97,16 +109,16 @@ export default function ProjectionPage() {
               }`}
             >
               {deltaPct > 0 ? "▲" : "▼"} {deltaPct > 0 ? "+" : ""}
-              {deltaPct.toFixed(1)}% vs base
+              {deltaPct.toFixed(1)}% {t("vsBase")}
             </span>
           )}
         </div>
         <div className="bg-card border border-border rounded-2xl p-4 shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
           <div className="text-[13px] font-semibold text-muted-foreground">
-            Idade de aposentadoria
+            {t("retirementAge")}
           </div>
           <div className="text-2xl font-extrabold tracking-[-0.02em] mt-1.5">
-            {currentParams.retirementAge} anos
+            {currentParams.retirementAge} {t("years")}
           </div>
           {isComparing && baseScenario && (
             <span
@@ -122,16 +134,16 @@ export default function ProjectionPage() {
               {Math.abs(
                 currentParams.retirementAge - baseScenario.retirementAge,
               )}{" "}
-              anos{" "}
+              {t("years")}{" "}
               {currentParams.retirementAge < baseScenario.retirementAge
-                ? "mais cedo"
-                : "mais tarde"}
+                ? t("earlier")
+                : t("later")}
             </span>
           )}
         </div>
         <div className="bg-card border border-border rounded-2xl p-4 shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
           <div className="text-[13px] font-semibold text-muted-foreground">
-            Contribuição mensal
+            {t("monthlyContribution")}
           </div>
           <div className="text-2xl font-extrabold tracking-[-0.02em] mt-1.5">
             {formatCurrency(currentParams.monthlyContribution)}
@@ -173,12 +185,4 @@ export default function ProjectionPage() {
       </div>
     </main>
   );
-}
-
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("pt-PT", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(value);
 }

@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,23 +13,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "@/i18n/navigation";
 import { computeMonthlyContribution } from "@/lib/calculations";
 import { setupSchema } from "@/lib/validation";
 import { useSetupStore } from "@/stores/useSetupStore";
 import { useSimulationStore } from "@/stores/useSimulationStore";
 import type { RiskProfile, SetupInput } from "@/types";
 
-const riskProfiles: { value: RiskProfile; label: string }[] = [
-  { value: "conservative", label: "Conservative (20% SPY / 80% AGG)" },
-  { value: "moderate", label: "Moderate (60% SPY / 40% AGG)" },
-  { value: "aggressive", label: "Aggressive (100% SPY)" },
-];
-
 export function SetupForm() {
+  const t = useTranslations("Setup");
   const router = useRouter();
   const setFormData = useSetupStore((s) => s.setFormData);
   const setMarketData = useSetupStore((s) => s.setMarketData);
   const initParams = useSimulationStore((s) => s.initParams);
+
+  const riskProfiles: { value: RiskProfile; label: string }[] = [
+    { value: "conservative", label: t("riskConservative") },
+    { value: "moderate", label: t("riskModerate") },
+    { value: "aggressive", label: t("riskAggressive") },
+  ];
 
   const {
     register,
@@ -54,7 +56,7 @@ export function SetupForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Failed to fetch market data");
+      if (!res.ok) throw new Error(t("fetchError"));
       return res.json();
     },
     onSuccess: (marketData, variables) => {
@@ -82,16 +84,14 @@ export function SetupForm() {
   return (
     <Card className="w-full max-w-2xl mx-auto border-border bg-card shadow-[0_1px_3px_rgba(11,43,38,.06),0_12px_32px_-12px_rgba(11,43,38,.12)]">
       <CardHeader>
-        <CardTitle className="text-base font-bold">WealthPath Setup</CardTitle>
-        <CardDescription>
-          Configure os dados do cliente para gerar a projeção financeira.
-        </CardDescription>
+        <CardTitle className="text-base font-bold">{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="clientName" className="text-sm font-medium">
-              Nome do Cliente
+              {t("clientName")}
             </label>
             <Input id="clientName" {...register("clientName")} />
             {errors.clientName && (
@@ -104,7 +104,7 @@ export function SetupForm() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label htmlFor="currentAge" className="text-sm font-medium">
-                Idade Atual
+                {t("currentAge")}
               </label>
               <Input
                 id="currentAge"
@@ -120,7 +120,7 @@ export function SetupForm() {
 
             <div className="space-y-2">
               <label htmlFor="retirementAge" className="text-sm font-medium">
-                Idade de Aposentadoria
+                {t("retirementAge")}
               </label>
               <Input
                 id="retirementAge"
@@ -138,7 +138,7 @@ export function SetupForm() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label htmlFor="monthlyIncome" className="text-sm font-medium">
-                Rendimento Mensal (€)
+                {t("monthlyIncome")}
               </label>
               <Input
                 id="monthlyIncome"
@@ -155,7 +155,7 @@ export function SetupForm() {
 
             <div className="space-y-2">
               <label htmlFor="monthlyExpenses" className="text-sm font-medium">
-                Despesas Mensais (€)
+                {t("monthlyExpenses")}
               </label>
               <Input
                 id="monthlyExpenses"
@@ -172,15 +172,12 @@ export function SetupForm() {
           </div>
 
           {surplus <= 0 && monthlyIncome > 0 && monthlyExpenses > 0 && (
-            <p className="text-sm text-destructive">
-              As despesas excedem o rendimento. Ajuste os valores para
-              continuar.
-            </p>
+            <p className="text-sm text-destructive">{t("surplusError")}</p>
           )}
 
           <div className="space-y-2">
             <label htmlFor="currentSavings" className="text-sm font-medium">
-              Valor Atual Investido (€)
+              {t("currentSavings")}
             </label>
             <Input
               id="currentSavings"
@@ -197,7 +194,7 @@ export function SetupForm() {
 
           <div className="space-y-2">
             <label htmlFor="riskProfile" className="text-sm font-medium">
-              Perfil de Risco
+              {t("riskProfile")}
             </label>
             <select
               id="riskProfile"
@@ -217,9 +214,7 @@ export function SetupForm() {
             className="w-full bg-primary text-primary-foreground font-bold rounded-xl hover:bg-primary/90 transition-colors"
             disabled={mutation.isPending || surplus <= 0}
           >
-            {mutation.isPending
-              ? "A obter dados de mercado..."
-              : "Gerar Projeção"}
+            {mutation.isPending ? t("submitting") : t("submit")}
           </Button>
         </form>
       </CardContent>
