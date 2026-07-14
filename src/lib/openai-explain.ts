@@ -29,10 +29,18 @@ Foca-te no impacto no património final e no risco de longevidade. Responde em p
         { role: "user", content: prompt },
       ],
       temperature: 0.3,
-      max_tokens: 150,
+      max_tokens: 800,
+      reasoning: { effort: "low" },
     });
 
-    return response.choices?.[0]?.message?.content ?? "";
+    const choice = response.choices?.[0];
+    const content = choice?.message?.content ?? "";
+    if (choice?.finish_reason === "length") {
+      console.warn(
+        "[ai-explain] resposta truncada por limite de tokens (finish_reason=length)",
+      );
+    }
+    return content;
   } catch {
     return "";
   }
